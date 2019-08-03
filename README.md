@@ -1,4 +1,4 @@
-# CSSBreakpoints
+# MediaBreakpoints
 
 JavaScript analog of [Bootstrap](https://getbootstrap.com/docs/4.3/layout/overview/#responsive-breakpoints) SCSS media breakpoints mixins.
 
