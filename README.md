@@ -27,7 +27,7 @@ npm i -S media-breakpoints
 
 ## Usage
 
-MediaBreakpoints is a singleton. 
+MediaBreakpoints is a singleton.
 
 ```javascript
 // MediaBreakpoints.js
@@ -50,7 +50,7 @@ import mb from './MediaBreakpoints';
 
 function handler(state) {
   console.log(state);
-  // { current: 'MD', matched: ['XS', 'SM', 'MD'] }
+  // { current: 'MD', matched: ['XS', 'SM', 'MD'], flow: ['XS', 'SM', 'MD', 'LG', 'XL'] }
 }
 
 mb.subscribe(handler);
@@ -58,4 +58,4 @@ mb.subscribe(handler);
 // ...
 
 mb.unsubscribe(handler);
-``` 
+```

@@ -7,20 +7,27 @@ module.exports = {
     'airbnb-base',
   ],
   rules: {
-    'class-methods-use-this': 0,
     'comma-dangle': 2,
-    'global-require': 0,
     'import/prefer-default-export': 0,
-    indent: 0,
+    'import/extensions': ['error', 'always', {
+      js: 'never',
+      mjs: 'never',
+      jsx: 'never',
+      ts: 'never',
+      tsx: 'never',
+    }],
+    'max-len': [2, 100, 2, {
+      ignoreRegExpLiterals: true,
+      ignoreStrings: true,
+      ignoreTemplateLiterals: true,
+    }],
     'no-console': [
       2,
       {
         allow: ['warn', 'error'],
       },
     ],
-    'no-param-reassign': 0,
     'no-plusplus': 0,
-    'no-shadow': 0,
     'no-underscore-dangle': 0,
     'prefer-destructuring': 0,
   },

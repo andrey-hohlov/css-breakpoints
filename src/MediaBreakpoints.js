@@ -1,29 +1,13 @@
-function throttle(func, wait) {
-  let timeout = null;
-
-  return function wrapper(...args) {
-    if (timeout) return;
-
-    if (!timeout) {
-      timeout = setTimeout(() => {
-        func.apply(this, args);
-        timeout = null;
-      }, wait);
-    }
-  };
-}
-
-let instance;
-
 class MediaBreakpoints {
   constructor(breakpoints) {
-    if (instance) return instance;
-
-    if (!instance) {
-      instance = this;
-    }
+    this.onResize = this.onResize.bind(this);
 
     const keys = Object.keys(breakpoints);
+
+    this.$flow = keys
+      .map((key) => ({ name: key, minWidth: breakpoints[key] }))
+      .sort((a, b) => a.minWidth - b.minWidth);
+    this.$listeners = [];
 
     this.matched = [];
     this.current = null;
@@ -31,29 +15,21 @@ class MediaBreakpoints {
       acc[key] = key;
       return acc;
     }, {});
-    this.$flow = keys
-      .map(key => ({ name: key, minWidth: breakpoints[key] }))
-      .sort((a, b) => a.minWidth - b.minWidth);
-
-    this.$listeners = [];
+    this.flow = this.$flow.map(({ name }) => name);
 
     this.onResize();
     this.emit();
-
-    this.throttledOnResize = throttle(() => this.onResize(), 300);
-
-    if (typeof window !== 'undefined') {
-      window.addEventListener('resize', this.throttledOnResize);
-    }
-
-    return instance;
+    this.setEvents(true);
   }
 
   destroy() {
+    this.setEvents(false);
+  }
+
+  setEvents(add) {
     if (typeof window !== 'undefined') {
-      window.removeEventListener('resize', this.throttledOnResize);
+      window[`${add ? 'add' : 'remove'}EventListener`]('resize', this.onResize);
     }
-    instance = null;
   }
 
   onResize() {
@@ -74,7 +50,7 @@ class MediaBreakpoints {
   }
 
   getBpFlowIndex(bp) {
-    return this.$flow.findIndex(item => item.name === bp);
+    return this.$flow.findIndex((item) => item.name === bp);
   }
 
   is(bp) {
@@ -113,7 +89,7 @@ class MediaBreakpoints {
   }
 
   emit() {
-    this.$listeners.forEach(handler => handler(this.getState()));
+    this.$listeners.forEach((handler) => handler(this.getState()));
   }
 
   subscribe(handler) {
